@@ -13,6 +13,9 @@ pub enum MyFlashloanProgramError {
     /// Not Rent Exempt
     #[error("Not Rent Exempt")]
     NotRentExempt,
+    /// Incorrect program Id
+    #[error("The account is not currently owned by the program")]
+    IncorrectProgramId,
 }
 
 impl From<MyFlashloanProgramError> for ProgramError {

@@ -20,8 +20,13 @@
     "pretty": "prettier --write '{,src/**/}*.ts'"
   },
   "dependencies": {
-    "@solana/web3.js": "^1.7.0",
+    "@orca-so/sdk": "^1.2.25",
+    "@solana/spl-token": "^0.3.6",
+    "@solana/spl-token-swap": "^0.2.1",
+    "@solana/web3.js": "^1.67.2",
+    "@solendprotocol/solend-sdk": "^0.6.6",
     "borsh": "^0.6.0",
+    "decimal.js": "^10.4.2",
     "mz": "^2.7.0",
     "yaml": "^1.10.2"
   },

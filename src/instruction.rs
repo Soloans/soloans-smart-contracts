@@ -39,6 +39,18 @@ pub enum MyFlashloanProgramInstruction {
         amount: u64,
 		execute_operation_ix_data: Vec<u8>,
     },
+    /// Receive a flash loan and perform user-defined operation and finally return the fund back.
+    ///
+    /// Accounts expected:
+    ///
+    ///   0. `[writable]` Source liquidity (matching the destination from above).
+    ///   1. `[writable]` Destination liquidity (matching the source from above).
+    ///   2. `[]` Token program id
+    ///   .. `[any]` Additional accounts provided to the lending program's `FlashLoan` instruction above.
+    ReceiveFlashLoan {
+        /// The amount that is loaned
+        amount: u64,
+    },
 }
 
 impl MyFlashloanProgramInstruction {
@@ -63,6 +75,11 @@ impl MyFlashloanProgramInstruction {
                     amount,
 					execute_operation_ix_data,
                 }
+			},
+            3 => {
+				let (amount, rest) = Self::unpack_u64(rest)?;
+                
+				Self::ReceiveFlashLoan { amount } 
 			},
             _ => return Err(InvalidInstruction.into()),
         })
@@ -117,6 +134,10 @@ impl MyFlashloanProgramInstruction {
                 buf.extend_from_slice(&amount.to_le_bytes());
 				let mut execute_operation_ix_data_borrowed = execute_operation_ix_data;
 				// buf.append(execute_operation_ix_data_borrowed.borrow_mut());
+            }
+            Self::ReceiveFlashLoan { amount } => {
+                buf.push(3);
+                buf.extend_from_slice(&amount.to_le_bytes());
             }
         }
         buf
